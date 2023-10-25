@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"En construccion", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
 
             }
         });
