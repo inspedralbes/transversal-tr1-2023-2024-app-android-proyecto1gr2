@@ -4,15 +4,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class Usuari {
 
-    private String nombre;
-    private String apellido;
-    private String mail;
+    private String nom;
+    private String cognom;
+    private String email;
     private String password;
 
-    public Usuari(String nombre, String apellido, String mail, String password) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.mail = mail;
+    public Usuari(String nom, String cognom, String email, String password) {
+        this.nom = nom;
+        this.cognom = cognom;
+        this.email = email;
         this.password = DigestUtils.md5Hex(password).toUpperCase();
     }
 
@@ -28,28 +28,28 @@ public class Usuari {
 
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNom() {
+        return nom;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getCognom() {
+        return cognom;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setCognom(String cognom) {
+        this.cognom = cognom;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
