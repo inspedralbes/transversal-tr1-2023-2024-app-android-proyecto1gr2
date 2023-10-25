@@ -3,9 +3,11 @@ package com.example.projectesupermercat;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -15,14 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-
+    TotalPriceListener priceListener;
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
     Context context;
     List<Producte> productes;
+    private float precioTotal = 0.0f;
 
-    public MyAdapter(Context context, List<Producte> items) {
+    public MyAdapter(Context context, List<Producte> items, TotalPriceListener listener) {
         this.context = context;
         this.productes = items;
+        this.priceListener = listener;
     }
 
     @NonNull
@@ -43,6 +47,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("Total",String.valueOf(precioTotal));
+                priceListener.onPriceChanged(precioTotal);
                 if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
                 int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
                 if (quantitat>0){
@@ -62,7 +68,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             @Override
             public void onClick(View view) {
                 int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
+                precioTotal += Float.parseFloat(holder.preuUnitatView.getText().toString().replace("€/u",""));
                 holder.quantitatView.setText(String.valueOf(quantitat+1));
+
             }
         });
         holder.minusButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +78,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onClick(View view) {
                 int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
                 if (quantitat>0){
+                    precioTotal -= Float.parseFloat(holder.preuUnitatView.getText().toString().replace("€/u",""));
                     holder.quantitatView.setText(String.valueOf(quantitat-1));
+
                 }
 
 
@@ -83,4 +93,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public int getItemCount() {
         return productes.size();
     }
+
 }
