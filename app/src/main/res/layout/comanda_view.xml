@@ -5,6 +5,7 @@
     android:layout_gravity="bottom"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/square_rounded_corners"
+    android:elevation="25dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="10dp">
     <ImageView

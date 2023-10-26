@@ -36,6 +36,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
     }
 
+    public MyAdapter( Context context, List<Producte> productes, TotalPriceListener priceListener, Map<Producte, Integer> cantidadPorProducto) {
+        this.priceListener = priceListener;
+        this.context = context;
+        this.productes = productes;
+        this.cantidadPorProducto = cantidadPorProducto;
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
@@ -48,9 +55,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         holder.nameView.setText(productes.get(position).getNom());
         holder.preuUnitatView.setText(productes.get(position).getPreu()+"€/u");
-
         int cantidad = cantidadPorProducto.get(producte);
         holder.quantitatView.setText(String.valueOf(cantidad));
+
+        int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
+        if (quantitat>0){
+            holder.preuTotalView.setText(decfor.format(Float.parseFloat(holder.preuUnitatView
+                    .getText().toString().replace("€/u","")) * quantitat)+"€");
+        }else{
+            holder.preuTotalView.setText("");
+        }
+
         holder.quantitatView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -119,4 +134,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return productes.size();
     }
 
+    public Map<Producte, Integer> getCantidadPorProducto() {
+        return cantidadPorProducto;
+    }
 }

@@ -15,6 +15,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComandaActivity"
+            android:exported="false"
+            android:label="@string/title_comanda_activity"
+            android:parentActivityName=".BasicActivity" />
+        <activity
             android:name=".BasicActivity"
             android:exported="false"
             android:label="@string/title_activity_basic"
