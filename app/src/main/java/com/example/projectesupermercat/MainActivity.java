@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText passwordText = findViewById(R.id.passwordEditText);
                 user.setEmail(emailText.getText().toString());
                 user.setPasswordCypher(passwordText.getText().toString());
+                Log.d("user", user.getPassword());
                 configurarApi();
                 Call<Usuari> call = getApiService().login(user);
                 call.enqueue(new Callback<Usuari>() {

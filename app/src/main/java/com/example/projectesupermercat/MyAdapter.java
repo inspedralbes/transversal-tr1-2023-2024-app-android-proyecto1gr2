@@ -52,6 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
         Producte producte = productes.get(position);
+        Log.d("Debug","Producte modificat: "+producte.getNom()+" ID: "+producte.getId());
 
         holder.nameView.setText(productes.get(position).getNom());
         holder.preuUnitatView.setText(productes.get(position).getPreu()+"€/u");
@@ -74,7 +75,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
+                //Solucion mientras el EditText esta deshabilitado
+                /*if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
                 int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
 
                 cantidadPorProducto.put(producte, quantitat);
@@ -85,7 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                             .getText().toString().replace("€/u","")) * quantitat)+"€");
                 }else{
                     holder.preuTotalView.setText("");
-                }
+                }*/
             }
 
             @Override
@@ -99,6 +101,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
                 cantidadPorProducto.put(producte, quantitat + 1);
                 holder.quantitatView.setText(String.valueOf(quantitat+1));
+                Log.d("Debug","Producto afegit: "+producte.getNom());
+                if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
+
+                //Solucion mientras el EditText esta deshabilitado
+                quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
+                cantidadPorProducto.put(producte, quantitat);
+                calcularPrecioTotal();
+                priceListener.onPriceChanged(precioTotal);
+                if (quantitat>0){
+                    holder.preuTotalView.setText(decfor.format(Float.parseFloat(holder.preuUnitatView
+                            .getText().toString().replace("€/u","")) * quantitat)+"€");
+                }else{
+                    holder.preuTotalView.setText("");
+                }
 
             }
         });
@@ -109,12 +125,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 if (quantitat>0){
                     cantidadPorProducto.put(producte, quantitat - 1);
                     holder.quantitatView.setText(String.valueOf(quantitat-1));
+                    if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
 
+                    //Solucion mientras el EditText esta deshabilitado
+                    quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
+                    cantidadPorProducto.put(producte, quantitat);
+                    calcularPrecioTotal();
+                    priceListener.onPriceChanged(precioTotal);
+                    if (quantitat>0){
+                        holder.preuTotalView.setText(decfor.format(Float.parseFloat(holder.preuUnitatView
+                                .getText().toString().replace("€/u","")) * quantitat)+"€");
+                    }else{
+                        holder.preuTotalView.setText("");
+                    }
                 }
 
 
             }
         });
+        calcularPrecioTotal();
+        priceListener.onPriceChanged(precioTotal);
         holder.imageView.setImageResource(R.drawable.fastmarket_logos_black);
     }
 
