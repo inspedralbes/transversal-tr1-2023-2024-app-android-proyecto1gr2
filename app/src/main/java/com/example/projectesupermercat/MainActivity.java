@@ -27,18 +27,31 @@ public class MainActivity extends AppCompatActivity {
     Usuari user = new Usuari();
 
     private static ApiService apiService;
+
+    TextView signUpTextView;
+    CardView cardView;
+    EditText emailText;
+    EditText passwordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView signUpTextView = findViewById(R.id.signUpTextView);
-        CardView cardView = findViewById(R.id.cardView);
+        initializeViews();
+        setupListeners();
+    }
+
+    private void setupListeners() {
+        signUpTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText emailText = findViewById(R.id.emailEditText);
-                EditText passwordText = findViewById(R.id.passwordEditText);
                 user.setEmail(emailText.getText().toString());
                 user.setPasswordCypher(passwordText.getText().toString());
                 Log.d("user", user.getPassword());
@@ -47,37 +60,40 @@ public class MainActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Usuari>() {
                     @Override
                     public void onResponse(Call<Usuari> call, Response<Usuari> response) {
-                        if(response.isSuccessful()){
-                            Log.d("Response", "Success");
-                            Usuari responseUser = response.body();
-                            Log.d("Response",responseUser.getEmail());
-                            if(responseUser.getEmail().equals("")){
-                                Toast.makeText(getApplicationContext(),"Incorrect user or pass", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Welcome "+responseUser.getNom(),Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplication(), BasicActivity.class);
-                                startActivity(intent);
-                            }
-                        }
+                        handleApiResponse(response.body());
                     }
-
                     @Override
                     public void onFailure(Call<Usuari> call, Throwable t) {
-                        Log.d("Response", "Failure");
-                        Toast.makeText(getApplicationContext(),"Server error", Toast.LENGTH_SHORT).show();
-
+                        handleApiFailure();
                     }
                 });
 
             }
         });
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
+    }
 
-            }
-        });
+    private void handleApiFailure() {
+        Log.d("Response", "Failure");
+        Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleApiResponse(Usuari responseUser) {
+        if (responseUser != null) {
+            Log.d("Response", "Success");
+            Toast.makeText(getApplicationContext(), "Welcome " + responseUser.getNom(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplication(), BasicActivity.class);
+            startActivity(intent);
+        } else {
+            Log.d("Response", "Success");
+            Toast.makeText(getApplicationContext(), "Incorrect user or pass", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void initializeViews() {
+        signUpTextView = findViewById(R.id.signUpTextView);
+        cardView = findViewById(R.id.cardView);
+        emailText = findViewById(R.id.emailEditText);
+        passwordText = findViewById(R.id.passwordEditText);
     }
 
     private void configurarApi() {
@@ -87,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-
 
     }
 
