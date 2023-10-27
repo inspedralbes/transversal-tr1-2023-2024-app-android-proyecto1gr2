@@ -45,29 +45,36 @@ public class MainActivity extends AppCompatActivity {
         signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
+                handleSignUpOnClick();
             }
         });
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                user.setEmail(emailText.getText().toString());
-                user.setPasswordCypher(passwordText.getText().toString());
-                Log.d("user", user.getPassword());
-                configurarApi();
-                Call<Usuari> call = getApiService().login(user);
-                call.enqueue(new Callback<Usuari>() {
-                    @Override
-                    public void onResponse(Call<Usuari> call, Response<Usuari> response) {
-                        handleApiResponse(response.body());
-                    }
-                    @Override
-                    public void onFailure(Call<Usuari> call, Throwable t) {
-                        handleApiFailure();
-                    }
-                });
+                handleCardOnClick();
+            }
+        });
+    }
 
+    private void handleSignUpOnClick() {
+        Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
+    }
+
+    private void handleCardOnClick() {
+        user.setEmail(emailText.getText().toString());
+        user.setPasswordCypher(passwordText.getText().toString());
+        Log.d("user", user.getPassword());
+        configurarApi();
+        Call<Usuari> call = getApiService().login(user);
+        call.enqueue(new Callback<Usuari>() {
+            @Override
+            public void onResponse(Call<Usuari> call, Response<Usuari> response) {
+                handleApiResponse(response.body());
+            }
+            @Override
+            public void onFailure(Call<Usuari> call, Throwable t) {
+                handleApiFailure();
             }
         });
     }
