@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -88,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
         if (responseUser != null) {
             Log.d("Response", "Success");
             Toast.makeText(getApplicationContext(), "Welcome " + responseUser.getNom(), Toast.LENGTH_SHORT).show();
+            SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("Email",responseUser.getEmail());
+            editor.putString("Nom",responseUser.getNom());
+            editor.putString("Cognom",responseUser.getCognom());
+            editor.commit();
             Intent intent = new Intent(getApplication(), BasicActivity.class);
             startActivity(intent);
         } else {
