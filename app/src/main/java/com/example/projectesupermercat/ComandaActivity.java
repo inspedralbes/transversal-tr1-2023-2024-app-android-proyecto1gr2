@@ -80,24 +80,30 @@ public class ComandaActivity extends AppCompatActivity {
     }
 
     private void handlePayButtonOnClick() {
+        Comanda comanda = crearComanda();
 
-        Call<Void> call = getApiService().enviarComanda(crearComanda());
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Internal Error", Toast.LENGTH_SHORT).show();
+        if(!comanda.getProductes().isEmpty()){
+            Call<Void> call = getApiService().enviarComanda(comanda);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Internal Error", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            Toast.makeText(getApplicationContext(),"No hi ha cap producte seleccionat", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
