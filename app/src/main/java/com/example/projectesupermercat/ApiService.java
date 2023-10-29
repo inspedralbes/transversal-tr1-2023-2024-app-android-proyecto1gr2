@@ -13,4 +13,7 @@ public interface ApiService {
 
     @GET("/consultarProductes")
     Call<List<Producte>> getProductes();
+
+    @POST("/addComandes")
+    Call<Void> enviarComanda(@Body Comanda comanda);
 }

@@ -159,6 +159,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
     }
 
+    public float getPrecioTotal() {
+        calcularPrecioTotal();
+        return precioTotal;
+    }
+
     @Override
     public int getItemCount() {
         return productes.size();

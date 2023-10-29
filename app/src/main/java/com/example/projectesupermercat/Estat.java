@@ -16,10 +16,4 @@ public enum Estat {
         return estat_actual;
     }
 
-    public Estat recibirEstat(int num){
-        if(Estat.values().length-1 >= num){
-            return Estat.INVALID;
-        }
-        return Estat.values()[num];
-    }
 }
