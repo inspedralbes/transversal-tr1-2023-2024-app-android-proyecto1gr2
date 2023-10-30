@@ -48,6 +48,7 @@ public class RegistreActivity extends AppCompatActivity {
 
     private void initializeViews() {
         nomText = findViewById(R.id.nom);
+        cognomsText = findViewById(R.id.cognoms);
         emailText = findViewById(R.id.email);
         contrasenyaText = findViewById(R.id.contrasenya);
         cancelar = findViewById(R.id.cancelar);
