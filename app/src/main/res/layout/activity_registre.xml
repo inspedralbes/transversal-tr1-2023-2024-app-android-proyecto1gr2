@@ -28,7 +28,7 @@
         android:layout_marginRight="15dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="nom" />
+        android:hint="nom" />
 
 
     <EditText
@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="cognoms" />
+        android:hint="cognoms" />
 
 
 
@@ -53,7 +53,7 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="email"/>
+        android:hint="email"/>
 
 
 

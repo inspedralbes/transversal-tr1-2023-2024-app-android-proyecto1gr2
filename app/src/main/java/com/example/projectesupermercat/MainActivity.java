@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleSignUpOnClick() {
-        Toast.makeText(getApplicationContext(),"On development", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplication(), RegistreActivity.class);
+        startActivity(intent);
     }
 
     private void handleCardOnClick() {
