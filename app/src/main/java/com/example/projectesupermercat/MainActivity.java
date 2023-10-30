@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         initializeViews();
         setupListeners();
+        configurarApi();
     }
 
     private void setupListeners() {

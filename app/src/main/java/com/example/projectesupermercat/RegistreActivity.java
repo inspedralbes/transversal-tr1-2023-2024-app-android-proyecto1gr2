@@ -1,5 +1,7 @@
 package com.example.projectesupermercat;
 
+import static com.example.projectesupermercat.MainActivity.getApiService;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -18,6 +20,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+
 public class RegistreActivity extends AppCompatActivity {
 
     private static ApiService apiService;
@@ -34,6 +38,10 @@ public class RegistreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registre);
+
+        initializeViews();
+        setupListeners();
+
     }
 
 
@@ -68,7 +76,6 @@ public class RegistreActivity extends AppCompatActivity {
         nouUsuari.setCognom(cognomsText.getText().toString());
         nouUsuari.setPasswordCypher(contrasenyaText.getText().toString());
         nouUsuari.setEmail(emailText.getText().toString());
-        configurarApi();
         Call<Void> call = getApiService().registrarUsuari(nouUsuari);
 
         call.enqueue(new Callback<Void>() {
@@ -97,20 +104,6 @@ public class RegistreActivity extends AppCompatActivity {
     private void handleApiFailure() {
         Log.d("Response", "Failure");
         Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
-    }
-
-    private void configurarApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dam.inspedralbes.cat:3593")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiService = retrofit.create(ApiService.class);
-
-    }
-
-    public static ApiService getApiService() {
-        return apiService;
     }
 
 }
