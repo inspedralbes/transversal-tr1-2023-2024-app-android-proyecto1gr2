@@ -16,4 +16,8 @@ public interface ApiService {
 
     @POST("/addComandes")
     Call<Void> enviarComanda(@Body Comanda comanda);
+
+    @POST("/registrarUsuari")
+    Call<Void> registrarUsuari(@Body Usuari usuari);
+
 }
