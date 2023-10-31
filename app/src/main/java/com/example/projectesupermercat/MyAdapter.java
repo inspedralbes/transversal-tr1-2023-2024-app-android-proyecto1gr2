@@ -1,8 +1,11 @@
 package com.example.projectesupermercat;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,7 +148,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         });
         calcularPrecioTotal();
         priceListener.onPriceChanged(precioTotal);
-        holder.imageView.setImageResource(R.drawable.fastmarket_logos_black);
+        byte[] imageBytes = Base64.decode(productes.get(position).getImatge(), Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        holder.imageView.setImageBitmap(decodedImage);
     }
 
     private void calcularPrecioTotal() {
