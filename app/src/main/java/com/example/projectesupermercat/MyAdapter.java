@@ -3,6 +3,7 @@ package com.example.projectesupermercat;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -10,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -148,9 +151,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         });
         calcularPrecioTotal();
         priceListener.onPriceChanged(precioTotal);
-        byte[] imageBytes = Base64.decode(productes.get(position).getImatge(), Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        holder.imageView.setImageBitmap(decodedImage);
+        new DownloadImageTask(holder.imageView)
+                .execute(producte.getImatge());
     }
 
     private void calcularPrecioTotal() {
@@ -176,5 +178,30 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     public Map<Producte, Integer> getCantidadPorProducto() {
         return cantidadPorProducto;
+    }
+
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
