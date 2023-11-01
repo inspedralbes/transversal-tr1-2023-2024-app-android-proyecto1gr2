@@ -20,4 +20,7 @@ public interface ApiService {
     @POST("/registrarUsuari")
     Call<Void> registrarUsuari(@Body Usuari usuari);
 
+    @POST("/getComandes")
+    Call<List<Comanda>> rebreComandes(@Body Usuari usuari);
+
 }

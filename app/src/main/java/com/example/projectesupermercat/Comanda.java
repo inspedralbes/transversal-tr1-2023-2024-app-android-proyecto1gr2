@@ -3,7 +3,6 @@ package com.example.projectesupermercat;
 import java.util.List;
 
 public class Comanda {
-
     private List<JsonProducte> productes;
     private String email;
     private int estado;
@@ -16,6 +15,14 @@ public class Comanda {
         this.estat = estat;
         this.estado = estat.getEstat_actual();
         this.preuTotal = preuTotal;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public List<JsonProducte> getProductes() {
@@ -49,8 +56,8 @@ public class Comanda {
         this.preuTotal = preuTotal;
     }
 
-    public Estat recibirEstat(int num){
-        if(Estat.values().length-1 >= num){
+    public static Estat recibirEstat(int num){
+        if(Estat.values().length-1 <= num){
             return Estat.INVALID;
         }
         return Estat.values()[num];

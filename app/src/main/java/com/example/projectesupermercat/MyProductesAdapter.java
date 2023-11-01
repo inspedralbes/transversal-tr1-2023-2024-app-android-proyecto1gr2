@@ -6,13 +6,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -23,7 +21,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHolder> {
 
     TotalPriceListener priceListener;
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
@@ -32,7 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private float precioTotal = 0.0f;
     private Map<Producte, Integer> cantidadPorProducto = new HashMap<>();
 
-    public MyAdapter(Context context, List<Producte> items, TotalPriceListener listener) {
+    public MyProductesAdapter(Context context, List<Producte> items, TotalPriceListener listener) {
         this.context = context;
         this.productes = items;
         this.priceListener = listener;
@@ -42,7 +40,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         }
     }
 
-    public MyAdapter( Context context, List<Producte> productes, TotalPriceListener priceListener, Map<Producte, Integer> cantidadPorProducto) {
+    public MyProductesAdapter(Context context, List<Producte> productes, TotalPriceListener priceListener, Map<Producte, Integer> cantidadPorProducto) {
         this.priceListener = priceListener;
         this.context = context;
         this.productes = productes;
@@ -51,12 +49,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.producte_view,parent,false));
+    public MyProductesViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
+        return new MyProductesViewHolder(LayoutInflater.from(context).inflate(R.layout.producte_view,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyProductesViewHolder holder, int position) {
         Producte producte = productes.get(position);
         Log.d("Debug","Producte modificat: "+producte.getNom()+" ID: "+producte.getId());
 

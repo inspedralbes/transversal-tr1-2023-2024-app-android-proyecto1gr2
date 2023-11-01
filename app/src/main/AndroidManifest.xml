@@ -15,6 +15,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".LlistaComandesActivity"
+            android:exported="false"
+            android:parentActivityName=".BasicActivity"/>
+        <activity
             android:name=".RegistreActivity"
             android:exported="false" />
         <activity

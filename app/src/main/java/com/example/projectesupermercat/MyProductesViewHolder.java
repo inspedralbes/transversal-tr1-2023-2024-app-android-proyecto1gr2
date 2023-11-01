@@ -9,14 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyViewHolder extends RecyclerView.ViewHolder {
+public class MyProductesViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
     TextView nameView,preuUnitatView,preuTotalView;
     EditText quantitatView;
     Button minusButton,plusButton;
 
-    public MyViewHolder(@NonNull View itemView) {
+    public MyProductesViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.imageView);
         nameView = itemView.findViewById(R.id.name);

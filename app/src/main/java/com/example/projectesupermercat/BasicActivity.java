@@ -5,23 +5,21 @@ import static com.example.projectesupermercat.MainActivity.getApiService;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,8 +34,6 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BasicActivity extends AppCompatActivity implements TotalPriceListener{
 
@@ -47,7 +43,7 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
     private List<Producte> producteList = new ArrayList<>();
     private TextView precioTotalTextView;
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
-    MyAdapter adapter;
+    MyProductesAdapter adapter;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
 
@@ -75,7 +71,7 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ComandaActivity.class);
-                Map<Producte,Integer> cantidadPorProducto = ((MyAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
+                Map<Producte,Integer> cantidadPorProducto = ((MyProductesAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
                 intent.putExtra("cantidadPorProducto", (Serializable) cantidadPorProducto);
                 launcher.launch(intent);
             }
@@ -90,11 +86,11 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
                     producteList = response.body();
                     Intent intent = getIntent();
                     if (intent != null && intent.getSerializableExtra("cantidadPorProducto")!=null) {
-                        recyclerView.setAdapter(new MyAdapter(getApplicationContext(),
+                        recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(),
                                 producteList,BasicActivity.this::onPriceChanged,
                                 (Map<Producte, Integer>) intent.getSerializableExtra("cantidadPorProducto")));
                     }else{
-                        recyclerView.setAdapter(new MyAdapter(getApplicationContext(),producteList,BasicActivity.this::onPriceChanged));
+                        recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(),producteList,BasicActivity.this::onPriceChanged));
                     }
 
                 }
@@ -114,6 +110,24 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
         super.onStart();
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.action_settings){
+            Intent intent = new Intent(getApplication(), LlistaComandesActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

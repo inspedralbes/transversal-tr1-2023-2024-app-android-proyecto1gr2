@@ -64,7 +64,7 @@ public class ComandaActivity extends AppCompatActivity {
                 else {
                     recyclerView = findViewById(R.id.recycler_view);
                     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                    recyclerView.setAdapter(new MyAdapter(getApplicationContext(), producteList, ComandaActivity.this::onPriceChanged,cantidadPorProducto));
+                    recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(), producteList, ComandaActivity.this::onPriceChanged,cantidadPorProducto));
                     CardView payButton = findViewById(R.id.payButton);
                     payButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -108,7 +108,7 @@ public class ComandaActivity extends AppCompatActivity {
     }
 
     private Comanda crearComanda() {
-        Map<Producte,Integer> cantidadPorProducto = ((MyAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
+        Map<Producte,Integer> cantidadPorProducto = ((MyProductesAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
         List<JsonProducte> jsonProducteList = new ArrayList<>();
         for (Map.Entry<Producte, Integer> entry : cantidadPorProducto.entrySet()) {
             Producte producto = entry.getKey();
@@ -120,7 +120,7 @@ public class ComandaActivity extends AppCompatActivity {
         }
         SharedPreferences settings = getSharedPreferences("UserInfo", 0);
         String email = settings.getString("Email", "").toString();
-        float precioTotal = ((MyAdapter)recyclerView.getAdapter()).getPrecioTotal();
+        float precioTotal = ((MyProductesAdapter)recyclerView.getAdapter()).getPrecioTotal();
         Comanda comanda = new Comanda(jsonProducteList, email,Estat.PENDENT_DE_CONFIRMACIO,precioTotal);
 
         return comanda;
@@ -146,7 +146,7 @@ public class ComandaActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BasicActivity.class);
         if(recyclerView != null){
             Log.d("Debug", "RecyclerView is not null");
-            Map<Producte, Integer> cantidadPorProducto = ((MyAdapter) recyclerView.getAdapter()).getCantidadPorProducto();
+            Map<Producte, Integer> cantidadPorProducto = ((MyProductesAdapter) recyclerView.getAdapter()).getCantidadPorProducto();
             intent.putExtra("cantidadPorProducto", new HashMap<>(cantidadPorProducto)); // Usar HashMap en lugar de Serializable
         }
 
