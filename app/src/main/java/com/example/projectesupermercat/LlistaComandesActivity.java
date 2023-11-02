@@ -43,7 +43,7 @@ public class LlistaComandesActivity extends AppCompatActivity {
                     Log.d("Response", "Success");
                     llistaComandes = response.body();
                     llistaComandes.forEach(comanda -> comanda.setEstat(Comanda.recibirEstat(comanda.getEstado())));
-                    comandesRecyclerView.setAdapter(new MyComandesAdapter(getApplicationContext(),llistaComandes));
+                    comandesRecyclerView.setAdapter(new MyComandesAdapter(LlistaComandesActivity.this,llistaComandes));
                     Log.d("Comandes", "Lista: "+llistaComandes.size());
                     Log.d("Comandes","RecyclerView: "+comandesRecyclerView.getAdapter().getItemCount());
 

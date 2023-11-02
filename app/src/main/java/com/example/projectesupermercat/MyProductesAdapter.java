@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,20 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
         this.context = context;
         this.productes = productes;
         this.cantidadPorProducto = cantidadPorProducto;
+    }
+
+    public MyProductesAdapter(Context context, List<JsonProducte> jsonProductes) {
+        this.context = context;
+        this.productes = new ArrayList<>();
+        jsonProductes.forEach(jsonProducte -> {
+
+            this.productes.add(new Producte(jsonProducte.getId(),
+                    jsonProducte.getNom(),
+                    jsonProducte.getDescripcio(),
+                    jsonProducte.getPreu(), jsonProducte.getQuantitat(), jsonProducte.getImatge(), 0,null));
+            cantidadPorProducto.put(this.productes.get(this.productes.size()-1), jsonProducte.getQuantitat());
+        });
+
     }
 
     @NonNull
@@ -148,7 +163,13 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
             }
         });
         calcularPrecioTotal();
-        priceListener.onPriceChanged(precioTotal);
+        if(priceListener != null){
+            priceListener.onPriceChanged(precioTotal);
+        }else{
+            holder.minusButton.setVisibility(View.INVISIBLE);
+            holder.plusButton.setVisibility(View.INVISIBLE);
+        }
+
         new DownloadImageTask(holder.imageView)
                 .execute(producte.getImatge());
     }

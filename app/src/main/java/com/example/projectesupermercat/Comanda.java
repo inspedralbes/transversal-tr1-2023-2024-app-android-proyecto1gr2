@@ -3,14 +3,14 @@ package com.example.projectesupermercat;
 import java.util.List;
 
 public class Comanda {
-    private List<JsonProducte> productes;
+    private List<JsonProducte> lista_productos;
     private String email;
     private int estado;
     private  Estat estat;
     private float preuTotal;
 
     public Comanda(List<JsonProducte> productes, String email, Estat estat, float preuTotal) {
-        this.productes = productes;
+        this.lista_productos = productes;
         this.email = email;
         this.estat = estat;
         this.estado = estat.getEstat_actual();
@@ -26,11 +26,11 @@ public class Comanda {
     }
 
     public List<JsonProducte> getProductes() {
-        return productes;
+        return lista_productos;
     }
 
     public void setProductes(List<JsonProducte> productes) {
-        this.productes = productes;
+        this.lista_productos = productes;
     }
     public String getEmail() {
         return email;
