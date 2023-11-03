@@ -3,6 +3,8 @@ package com.example.projectesupermercat;
 import static com.example.projectesupermercat.MainActivity.getApiService;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,11 +16,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +48,8 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
     private ActivityBasicBinding binding;
 
     private List<Producte> producteList = new ArrayList<>();
+
+    private List<Categoria> categoriaList = new ArrayList<>();
     private TextView precioTotalTextView;
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
     MyProductesAdapter adapter;
@@ -103,6 +112,60 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             }
         });
 
+        Call<List<Categoria>> categoriaCall = getApiService().getCategories();
+        categoriaCall.enqueue(new Callback<List<Categoria>>() {
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                if(response.isSuccessful()){
+                    Log.d("Response", "Success");
+                    categoriaList = response.body();
+                    createCategoriasCardViews();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void createCategoriasCardViews() {
+        LinearLayout categoriaLayout = findViewById(R.id.layout_categoria);
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontal_scroll_view);
+        horizontalScrollView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        categoriaList.forEach(categoria -> {
+            CardView cardView = new CardView(getApplicationContext()); // Reemplaza 'this' con el contexto adecuado
+            CardView.LayoutParams cardLayoutParams = new CardView.LayoutParams(
+                    CardView.LayoutParams.WRAP_CONTENT,
+                    CardView.LayoutParams.WRAP_CONTENT
+            );
+            cardLayoutParams.setMargins(0, 0, dpToPx(10), 0); // Ajusta los valores según tus necesidades
+            cardView.setLayoutParams(cardLayoutParams);
+            cardView.setCardBackgroundColor(Color.parseColor("#FAB333"));
+            cardView.setRadius(dpToPx(7));
+
+            TextView textView = new TextView(getApplicationContext()); // Reemplaza 'this' con el contexto adecuado
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(dpToPx(10), 0, dpToPx(10), 0); // Establecer márgenes horizontal (izquierda y derecha) de 10dp
+            textView.setLayoutParams(layoutParams);
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            textView.setTextSize(20);
+            textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+            textView.setText(categoria.getNom());
+
+            cardView.addView(textView);
+            categoriaLayout.addView(cardView);
+        });
+    }
+
+    public int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 
     @Override

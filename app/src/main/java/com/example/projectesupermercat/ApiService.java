@@ -23,4 +23,6 @@ public interface ApiService {
     @POST("/getComandes")
     Call<List<Comanda>> rebreComandes(@Body Usuari usuari);
 
+    @GET("/consultarCategories")
+    Call<List<Categoria>> getCategories();
 }
