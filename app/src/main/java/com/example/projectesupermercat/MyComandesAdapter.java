@@ -43,6 +43,7 @@ public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder
         holder.nameView.setText("Comanda #"+(position+1));
         holder.preuTotalView.setText(String.valueOf(comanda.getPreuTotal())+"€");
         holder.estadoView.setText(comanda.getEstat().getEstado_text());
+        holder.estadoView.setTextColor(comanda.getEstat().getColor_actual());
         holder.comandaLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
