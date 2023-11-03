@@ -50,7 +50,10 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
     private List<Producte> producteList = new ArrayList<>();
 
     private List<Categoria> categoriaList = new ArrayList<>();
+    private Categoria selectedCategoria;
     private TextView precioTotalTextView;
+
+    private List<CardView> categoriasCardViews = new ArrayList<>();
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
     MyProductesAdapter adapter;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -119,6 +122,7 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
                 if(response.isSuccessful()){
                     Log.d("Response", "Success");
                     categoriaList = response.body();
+                    categoriaList.add(0,new Categoria(0,"Totes"));
                     createCategoriasCardViews();
                 }
             }
@@ -143,9 +147,9 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             );
             cardLayoutParams.setMargins(0, 0, dpToPx(10), 0); // Ajusta los valores según tus necesidades
             cardView.setLayoutParams(cardLayoutParams);
-            cardView.setCardBackgroundColor(Color.parseColor("#FAB333"));
+            cardView.setCardBackgroundColor(Color.parseColor("#D3D3D3"));
             cardView.setRadius(dpToPx(7));
-
+            categoriasCardViews.add(cardView);
             TextView textView = new TextView(getApplicationContext()); // Reemplaza 'this' con el contexto adecuado
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -160,6 +164,25 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
 
             cardView.addView(textView);
             categoriaLayout.addView(cardView);
+        });
+        categoriasCardViews.get(0).setCardBackgroundColor(Color.parseColor("#FAB333"));
+        categoriasCardViews.forEach(cardView -> {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateSelectedCardView(cardView);
+                }
+            });
+        });
+    }
+
+    private void updateSelectedCardView(CardView selectedCardView) {
+        categoriasCardViews.forEach(cardView -> {
+            if(cardView == selectedCardView){
+                cardView.setCardBackgroundColor(Color.parseColor("#FAB333"));
+            }else{
+                cardView.setCardBackgroundColor(Color.parseColor("#D3D3D3"));
+            }
         });
     }
 
