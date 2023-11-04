@@ -16,8 +16,10 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -176,13 +178,14 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
 
     private void calcularPrecioTotal() {
         precioTotal = 0.0f;
-
-        for (Producte producto : productes) {
-            int cantidad = cantidadPorProducto.get(producto);
+        Set<Producte> producteSet = cantidadPorProducto.keySet();
+        Iterator<Producte> producteIterator = producteSet.iterator();
+        producteIterator.forEachRemaining(producte -> {
+            int cantidad = cantidadPorProducto.get(producte);
             if (cantidad > 0) {
-                precioTotal += producto.getPreu() * cantidad;
+                precioTotal += producte.getPreu() * cantidad;
             }
-        }
+        });
     }
 
     public float getPrecioTotal() {

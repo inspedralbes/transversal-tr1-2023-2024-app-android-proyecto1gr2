@@ -3,6 +3,8 @@ package com.example.projectesupermercat;
 import static com.example.projectesupermercat.MainActivity.getApiService;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -14,11 +16,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +48,14 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
     private ActivityBasicBinding binding;
 
     private List<Producte> producteList = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+
+    private List<Categoria> categoriaList = new ArrayList<>();
+    private Categoria selectedCategoria;
     private TextView precioTotalTextView;
+
+    private List<CardView> categoriasCardViews = new ArrayList<>();
     private static final DecimalFormat decfor = new DecimalFormat("0.00");
     MyProductesAdapter adapter;
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -64,7 +78,7 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
 
         RelativeLayout comandaView = findViewById(R.id.comandaButton);
         precioTotalTextView = comandaView.findViewById(R.id.preu_total_final);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         comandaView.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +117,101 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             }
         });
 
+        Call<List<Categoria>> categoriaCall = getApiService().getCategories();
+        categoriaCall.enqueue(new Callback<List<Categoria>>() {
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                if(response.isSuccessful()){
+                    Log.d("Response", "Success");
+                    categoriaList = response.body();
+                    categoriaList.add(0,new Categoria(0,"Totes"));
+                    createCategoriasCardViews();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void createCategoriasCardViews() {
+        LinearLayout categoriaLayout = findViewById(R.id.layout_categoria);
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontal_scroll_view);
+        horizontalScrollView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        categoriaList.forEach(categoria -> {
+            CardView cardView = new CardView(getApplicationContext()); // Reemplaza 'this' con el contexto adecuado
+            CardView.LayoutParams cardLayoutParams = new CardView.LayoutParams(
+                    CardView.LayoutParams.WRAP_CONTENT,
+                    CardView.LayoutParams.WRAP_CONTENT
+            );
+            cardLayoutParams.setMargins(0, 0, dpToPx(10), 0); // Ajusta los valores según tus necesidades
+            cardView.setLayoutParams(cardLayoutParams);
+            cardView.setCardBackgroundColor(Color.parseColor("#D3D3D3"));
+            cardView.setRadius(dpToPx(7));
+            categoriasCardViews.add(cardView);
+            TextView textView = new TextView(getApplicationContext()); // Reemplaza 'this' con el contexto adecuado
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(dpToPx(10), 0, dpToPx(10), 0); // Establecer márgenes horizontal (izquierda y derecha) de 10dp
+            textView.setLayoutParams(layoutParams);
+            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            textView.setTextSize(20);
+            textView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+            textView.setText(categoria.getNom());
+
+            cardView.addView(textView);
+            categoriaLayout.addView(cardView);
+        });
+        categoriasCardViews.get(0).setCardBackgroundColor(Color.parseColor("#FAB333"));
+        categoriasCardViews.forEach(cardView -> {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    categoriaList.forEach(categoria -> {
+                        if(((TextView)cardView.getChildAt(0)).getText().toString() == categoria.getNom()){
+                            selectedCategoria = categoria;
+                        }
+                    });
+                    updateSelectedCardView(cardView);
+                    recyclerViewByCategoria();
+                }
+            });
+        });
+    }
+
+    private void recyclerViewByCategoria() {
+        Map<Producte,Integer> cantidadPorProducto = ((MyProductesAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
+        if(selectedCategoria == categoriaList.get(0)){
+            recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(),producteList,BasicActivity.this::onPriceChanged, cantidadPorProducto));
+        }else {
+            List<Producte> categoriaProducteList = new ArrayList<>();
+            producteList.forEach(producte -> {
+                if (producte.getId_categoria() == selectedCategoria.getId()) {
+                    categoriaProducteList.add(producte);
+                }
+            });
+            recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(), categoriaProducteList, BasicActivity.this::onPriceChanged, cantidadPorProducto));
+        }
+    }
+
+    private void updateSelectedCardView(CardView selectedCardView) {
+        categoriasCardViews.forEach(cardView -> {
+            if(cardView == selectedCardView){
+                cardView.setCardBackgroundColor(Color.parseColor("#FAB333"));
+            }else{
+                cardView.setCardBackgroundColor(Color.parseColor("#D3D3D3"));
+            }
+        });
+    }
+
+    public int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 
     @Override
