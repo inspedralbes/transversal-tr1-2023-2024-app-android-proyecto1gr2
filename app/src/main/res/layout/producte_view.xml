@@ -30,8 +30,8 @@
         tools:text="Preu"/>
     <LinearLayout
         android:id="@+id/quantityLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="145dp"
+        android:layout_height="50dp"
         android:layout_toEndOf="@id/preu_unitat"
         android:layout_below="@id/name"
         android:layout_marginLeft="60dp"
@@ -70,6 +70,7 @@
         android:id="@+id/preu_total"
         android:layout_below="@id/quantityLayout"
         android:layout_alignRight="@id/quantityLayout"
+        android:layout_marginRight="5dp"
         android:textColor="@color/black"
         tools:text="PreuTotal"/>
 
