@@ -49,6 +49,8 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
 
     private List<Producte> producteList = new ArrayList<>();
 
+    private RecyclerView recyclerView;
+
     private List<Categoria> categoriaList = new ArrayList<>();
     private Categoria selectedCategoria;
     private TextView precioTotalTextView;
@@ -76,7 +78,7 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
 
         RelativeLayout comandaView = findViewById(R.id.comandaButton);
         precioTotalTextView = comandaView.findViewById(R.id.preu_total_final);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         comandaView.setOnClickListener(new View.OnClickListener() {
@@ -170,10 +172,31 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    categoriaList.forEach(categoria -> {
+                        if(((TextView)cardView.getChildAt(0)).getText().toString() == categoria.getNom()){
+                            selectedCategoria = categoria;
+                        }
+                    });
                     updateSelectedCardView(cardView);
+                    recyclerViewByCategoria();
                 }
             });
         });
+    }
+
+    private void recyclerViewByCategoria() {
+        Map<Producte,Integer> cantidadPorProducto = ((MyProductesAdapter)recyclerView.getAdapter()).getCantidadPorProducto();
+        if(selectedCategoria == categoriaList.get(0)){
+            recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(),producteList,BasicActivity.this::onPriceChanged, cantidadPorProducto));
+        }else {
+            List<Producte> categoriaProducteList = new ArrayList<>();
+            producteList.forEach(producte -> {
+                if (producte.getId_categoria() == selectedCategoria.getId()) {
+                    categoriaProducteList.add(producte);
+                }
+            });
+            recyclerView.setAdapter(new MyProductesAdapter(getApplicationContext(), categoriaProducteList, BasicActivity.this::onPriceChanged, cantidadPorProducto));
+        }
     }
 
     private void updateSelectedCardView(CardView selectedCardView) {
