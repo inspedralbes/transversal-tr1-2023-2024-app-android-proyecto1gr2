@@ -17,6 +17,7 @@
         <activity
             android:name=".LlistaComandesActivity"
             android:exported="false"
+            android:label="@string/title_llista_comandes"
             android:parentActivityName=".BasicActivity"/>
         <activity
             android:name=".RegistreActivity"

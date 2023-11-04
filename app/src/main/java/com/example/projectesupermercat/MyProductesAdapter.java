@@ -96,19 +96,7 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //Solucion mientras el EditText esta deshabilitado
-                /*if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
-                int quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
 
-                cantidadPorProducto.put(producte, quantitat);
-                calcularPrecioTotal();
-                priceListener.onPriceChanged(precioTotal);
-                if (quantitat>0){
-                    holder.preuTotalView.setText(decfor.format(Float.parseFloat(holder.preuUnitatView
-                            .getText().toString().replace("€/u","")) * quantitat)+"€");
-                }else{
-                    holder.preuTotalView.setText("");
-                }*/
             }
 
             @Override
@@ -125,7 +113,6 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
                 Log.d("Debug","Producto afegit: "+producte.getNom());
                 if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
 
-                //Solucion mientras el EditText esta deshabilitado
                 quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
                 cantidadPorProducto.put(producte, quantitat);
                 calcularPrecioTotal();
@@ -148,7 +135,6 @@ public class MyProductesAdapter extends RecyclerView.Adapter<MyProductesViewHold
                     holder.quantitatView.setText(String.valueOf(quantitat-1));
                     if(holder.quantitatView.getText().toString().equals("")) holder.quantitatView.setText("0");
 
-                    //Solucion mientras el EditText esta deshabilitado
                     quantitat = Integer.parseInt(holder.quantitatView.getText().toString());
                     cantidadPorProducto.put(producte, quantitat);
                     calcularPrecioTotal();

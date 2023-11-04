@@ -50,7 +50,7 @@
             android:layout_marginRight="15dp"
             android:backgroundTint="#000"
             android:foregroundTint="#000"
-            android:hint="Password"
+            android:hint="Contrasenya"
             android:inputType="textPassword"
             android:textColor="#000"
             android:textColorHint="#000"></EditText>
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif"
-                android:text="Login"
+                android:text="Iniciar sessió"
                 android:textColor="#000"
                 android:textSize="20dp">
 
@@ -89,7 +89,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif"
                 android:textColor="#000"
-                android:text="Don't have an account?" />
+                android:text="Encara no tens compte?" />
 
             <TextView
                 android:id="@+id/signUpTextView"
@@ -98,7 +98,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="sans-serif"
-                android:text="Sign up"
+                android:text="Registra't"
                 android:textColor="#FAB333"
                 android:textSize="18dp" />
         </LinearLayout>

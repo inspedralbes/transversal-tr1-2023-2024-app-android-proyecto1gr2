@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MyProductesViewHolder extends RecyclerView.ViewHolder {
 
     ImageView imageView;
-    TextView nameView,preuUnitatView,preuTotalView;
-    EditText quantitatView;
+    TextView nameView,preuUnitatView,preuTotalView,quantitatView;
     Button minusButton,plusButton;
 
     public MyProductesViewHolder(@NonNull View itemView) {
