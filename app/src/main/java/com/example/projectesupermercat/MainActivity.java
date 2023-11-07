@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,9 +114,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configurarApi() {
+        OkHttpClient client = new OkHttpClient();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        builder.addInterceptor(new AddCookiesInterceptor(this));
+        builder.addInterceptor(new ReceivedCookiesInterceptor(this));
+        client = builder.build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://dam.inspedralbes.cat:3593")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
 
         apiService = retrofit.create(ApiService.class);
