@@ -89,10 +89,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleApiResponse(Usuari responseUser) {
-        if (responseUser != null) {
+        if (!(responseUser.getEmail().equals(""))) {
             Log.d("Response", "Success");
-            Toast.makeText(getApplicationContext(), "Welcome " + responseUser.getNom(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Hola, " + responseUser.getNom(), Toast.LENGTH_SHORT).show();
             SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+            Log.d("email",settings.getString("Email",""));
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("Email",responseUser.getEmail());
             editor.putString("Nom",responseUser.getNom());
@@ -111,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
         cardView = findViewById(R.id.cardView);
         emailText = findViewById(R.id.emailEditText);
         passwordText = findViewById(R.id.passwordEditText);
+        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
+        String savedEmail = settings.getString("Email","");
+        if(!savedEmail.equals("")){
+            emailText.setText(savedEmail);
+        }
     }
 
     private void configurarApi() {
