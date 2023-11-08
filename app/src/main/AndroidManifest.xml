@@ -15,6 +15,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".PerfilActivity"
+            android:exported="false"
+            android:label="Perfil"
+            android:parentActivityName=".BasicActivity"/>
+        <activity
+            android:name=".EditActivity"
+            android:exported="false"
+            android:label="Edit"
+            android:parentActivityName=".PerfilActivity"/>
+        <activity
             android:name=".LlistaComandesActivity"
             android:exported="false"
             android:label="@string/title_llista_comandes"

@@ -3,31 +3,34 @@ package com.example.projectesupermercat;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class Usuari {
-
+    private int id;
     private String nom;
     private String cognom;
     private String email;
     private String password;
 
-    public Usuari(String nom, String cognom, String email, String password) {
+    public Usuari(int id, String nom, String cognom, String email, String password) {
+        this.id = id;
         this.nom = nom;
         this.cognom = cognom;
         this.email = email;
         this.password = DigestUtils.md5Hex(password).toUpperCase();
     }
 
-    public Usuari(String nombre, String apellido, String mail){
-        this(nombre,apellido,mail,"");
+    public Usuari(int id, String nombre, String apellido, String mail){
+        this(id, nombre,apellido,mail,"");
     }
 
     public Usuari(String mail, String password) {
-        this("","",mail,password);
+        this(0,"","",mail,password);
     }
 
     public Usuari(){
 
     }
+    public int getId() { return id; }
 
+    public void setId(int id) { this.id = id; }
     public String getNom() {
         return nom;
     }

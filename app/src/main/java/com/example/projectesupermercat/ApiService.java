@@ -26,4 +26,6 @@ public interface ApiService {
 
     @GET("/consultarCategories")
     Call<List<Categoria>> getCategories();
+    @POST("/actualitzarUsuari")
+    Call<Void> updateUsuari(@Body Usuari data);
 }

@@ -235,6 +235,11 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             startActivity(intent);
             return true;
         }
+        if(id == R.id.action_settings2){
+            Intent intent = new Intent(getApplication(), PerfilActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
