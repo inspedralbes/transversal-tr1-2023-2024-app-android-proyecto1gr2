@@ -19,12 +19,15 @@ import retrofit2.Response;
 
 public class LlistaComandesActivity extends AppCompatActivity {
 
+
     RecyclerView comandesRecyclerView;
     List<Comanda> llistaComandes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_llista_comandes);
+
+
 
         comandesRecyclerView = findViewById(R.id.comandes_recycler_view);
         comandesRecyclerView.setLayoutManager(new LinearLayoutManager(this));

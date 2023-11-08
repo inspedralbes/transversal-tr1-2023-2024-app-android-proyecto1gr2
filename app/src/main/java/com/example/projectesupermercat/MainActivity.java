@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences settings = getSharedPreferences("UserInfo", 0);
             Log.d("email",settings.getString("Email",""));
             SharedPreferences.Editor editor = settings.edit();
+            editor.putString("id",responseUser.getId());
             editor.putString("Email",responseUser.getEmail());
             editor.putString("Nom",responseUser.getNom());
             editor.putString("Cognom",responseUser.getCognom());

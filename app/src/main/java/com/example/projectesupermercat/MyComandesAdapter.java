@@ -19,21 +19,64 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder>{
+public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder> {
 
+    SocketManager socketManager;
     private Activity activity;
     List<Comanda> comandas;
+    Map<Comanda, MyComandesViewHolder> comandaToViewHolderMap = new HashMap<>();
     public MyComandesAdapter(Activity activity, List<Comanda> items){
         this.activity = activity;
         this.comandas = items;
+        socketManager = new SocketManager();
+        socketManager.connect();
+        socketManager.sendAutentification(activity);
+        socketManager.setOnMessageReceivedListener(new SocketManager.SocketEventListener() {
+            @Override
+            public void onMessageReceived(String message) {
+                Log.d("Message", message);
+                Gson gson = new Gson();
+                JsonComanda jsonComanda = gson.fromJson(message,JsonComanda.class);
+                comandas.forEach(comanda -> {
+                    if(comanda.getId() == jsonComanda.getId()){
+                        comanda.setEstat(Comanda.recibirEstat(jsonComanda.getEstado()));
+
+                        MyComandesViewHolder viewHolder = comandaToViewHolderMap.get(comanda);
+                        if (viewHolder != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    viewHolder.estadoView.setText(comanda.getEstat().getEstado_text());
+                                    viewHolder.estadoView.setTextColor(comanda.getEstat().getColor_actual());
+                                }
+                            });
+
+                            Log.d("Comanda updateada", String.valueOf(comanda.getId()));
+                        }
+                    }
+
+                });
+
+
+
+
+            }
+        });
     }
     @NonNull
     @Override
     public MyComandesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyComandesViewHolder(LayoutInflater.from(activity).inflate(R.layout.comanda_element_view,parent,false));
+        MyComandesViewHolder viewHolder = new MyComandesViewHolder(LayoutInflater.from(activity).inflate(R.layout.comanda_element_view,parent,false));
+        return viewHolder;
     }
 
     @Override
@@ -51,6 +94,7 @@ public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder
                 mostrarProductos(comanda, position);
             }
         });
+        comandaToViewHolderMap.put(comandas.get(position), holder);
     }
 
     private void mostrarProductos(Comanda comanda, int position) {
@@ -74,7 +118,7 @@ public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder
             recollirButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO cambiar estado de la comanda
+                    socketManager.sendRecollitEstat(comanda.getId());
                 }
             });
             if(comanda.getEstat() != Estat.LLEST){
@@ -91,5 +135,6 @@ public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder
     public int getItemCount() {
         return comandas.size();
     }
+
 
 }
