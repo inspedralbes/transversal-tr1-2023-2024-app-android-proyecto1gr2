@@ -119,6 +119,7 @@ public class MyComandesAdapter extends RecyclerView.Adapter<MyComandesViewHolder
                 @Override
                 public void onClick(View view) {
                     socketManager.sendRecollitEstat(comanda.getId());
+                    dialog.dismiss();
                 }
             });
             if(comanda.getEstat() != Estat.LLEST){

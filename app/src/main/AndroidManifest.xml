@@ -34,7 +34,8 @@
             android:exported="false" />
         <activity
             android:name=".PaymentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".BasicActivity"/>
         <activity
             android:name=".ComandaActivity"
             android:exported="false"
