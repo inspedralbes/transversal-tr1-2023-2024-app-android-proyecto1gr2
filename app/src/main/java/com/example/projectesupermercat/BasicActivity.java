@@ -234,11 +234,29 @@ public class BasicActivity extends AppCompatActivity implements TotalPriceListen
             Intent intent = new Intent(getApplication(), LlistaComandesActivity.class);
             startActivity(intent);
             return true;
-        }
-        if(id == R.id.action_settings2){
+        } else if(id == R.id.action_settings2){
             Intent intent = new Intent(getApplication(), PerfilActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_settings_logout) {
+            Call call = getApiService().logout();
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if(response.isSuccessful()){
+                        Intent intent = new Intent(getApplication(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.d("Error", "error: ",t);
+                    Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplication(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

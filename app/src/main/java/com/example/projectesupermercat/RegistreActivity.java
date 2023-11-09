@@ -6,20 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 
 public class RegistreActivity extends AppCompatActivity {
@@ -74,7 +69,7 @@ public class RegistreActivity extends AppCompatActivity {
     private void handleRegistreOnClick() {
 
         nouUsuari.setNom(nomText.getText().toString());
-        nouUsuari.setCognom(cognomsText.getText().toString());
+        nouUsuari.setCognoms(cognomsText.getText().toString());
         nouUsuari.setPasswordCypher(contrasenyaText.getText().toString());
         nouUsuari.setEmail(emailText.getText().toString());
         Call<Void> call = getApiService().registrarUsuari(nouUsuari);

@@ -15,4 +15,11 @@
         android:orderInCategory="100"
         android:title="Les meves comandes"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orderInCategory="100"
+        android:title="Tancar sessió"
+        app:showAsAction="never" />
 </menu>

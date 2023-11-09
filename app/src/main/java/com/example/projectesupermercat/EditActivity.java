@@ -8,14 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +37,7 @@ public class EditActivity extends AppCompatActivity {
         email = findViewById(R.id.emailText);
         save  = findViewById(R.id.save);
 
-        id = settings.getInt("Id",0);
+        id = settings.getInt("userId",0);
         nom.setText(settings.getString("Nom","").toString());
         cognoms.setText(settings.getString("Cognoms","").toString());
         email.setText(settings.getString("Email","").toString());
@@ -56,8 +52,9 @@ public class EditActivity extends AppCompatActivity {
 
     }
     public void onSavePressed() {
+        editedUsuari.setUserId(id);
         editedUsuari.setNom(nom.getText().toString());
-        editedUsuari.setCognom(cognoms.getText().toString());
+        editedUsuari.setCognoms(cognoms.getText().toString());
         editedUsuari.setEmail(email.getText().toString());
 
         Log.d("Usuario","Info usuario: "+editedUsuari);
@@ -70,7 +67,7 @@ public class EditActivity extends AppCompatActivity {
                     SharedPreferences settings = getSharedPreferences("UserInfo", 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("Nom",editedUsuari.getNom());
-                    editor.putString("Cognoms",editedUsuari.getCognom());
+                    editor.putString("Cognoms",editedUsuari.getCognoms());
                     editor.putString("Email",editedUsuari.getEmail());
                     editor.commit();
                     Toast.makeText(getApplicationContext(), "Actualizado correctamente", Toast.LENGTH_SHORT).show();

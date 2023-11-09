@@ -15,6 +15,9 @@ public interface ApiService {
     @POST("/login")
     Call<Usuari> login(@Body Usuari usuari);
 
+    @GET("/logout")
+    Call<Void> logout();
+
     @GET("/consultarProductes")
     Call<List<Producte>> getProductes();
 

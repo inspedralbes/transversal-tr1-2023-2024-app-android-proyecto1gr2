@@ -5,24 +5,34 @@ import org.apache.commons.codec.digest.DigestUtils;
 public class Usuari {
 
     private String id;
+    private int userId;
     private String nom;
-    private String cognom;
+    private String cognoms;
     private String email;
     private String password;
 
-    public Usuari(String nom, String cognom, String email, String password) {
+    public Usuari(String nom, String cognoms, String email, String password) {
         this.nom = nom;
-        this.cognom = cognom;
+        this.cognoms = cognoms;
         this.email = email;
         this.password = DigestUtils.md5Hex(password).toUpperCase();
     }
 
-    public Usuari(String id, String nom, String cognom, String email, String password) {
+    public Usuari(String id, String nom, String cognoms, String email, String password) {
         this.id = id;
         this.nom = nom;
-        this.cognom = cognom;
+        this.cognoms = cognoms;
         this.email = email;
         this.password = DigestUtils.md5Hex(password).toUpperCase();
+    }
+
+    public Usuari(String id, int userId, String nom, String cognoms, String email, String password) {
+        this.id = id;
+        this.userId = userId;
+        this.nom = nom;
+        this.cognoms = cognoms;
+        this.email = email;
+        this.password = password;
     }
 
     public Usuari(String nombre, String apellido, String mail){
@@ -45,6 +55,14 @@ public class Usuari {
         this.id = id;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -53,12 +71,12 @@ public class Usuari {
         this.nom = nom;
     }
 
-    public String getCognom() {
-        return cognom;
+    public String getCognoms() {
+        return cognoms;
     }
 
-    public void setCognom(String cognom) {
-        this.cognom = cognom;
+    public void setCognoms(String cognoms) {
+        this.cognoms = cognoms;
     }
 
     public String getEmail() {

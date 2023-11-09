@@ -23,8 +23,7 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
         Usuari user = new Usuari();
         user.setEmail(settings.getString("Email","").toString());
 
@@ -35,7 +34,7 @@ public class PerfilActivity extends AppCompatActivity {
 
         nom.setText(settings.getString("Nom","").toString());
         cognoms.setText(settings.getString("Cognoms","").toString());
-        email.setText(settings.getString("Email","").toString());
+        email.setText(user.getEmail());
         Log.d("Values","concat of "+nom.getText()+cognoms.getText()+email.getText());
 
         editar.setOnClickListener(new View.OnClickListener() {

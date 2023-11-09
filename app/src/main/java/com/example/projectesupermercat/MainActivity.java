@@ -12,11 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Map;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,21 +73,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleCardOnClick() {
-        user.setEmail(emailText.getText().toString());
-        user.setPasswordCypher(passwordText.getText().toString());
-        Log.d("user", user.getPassword());
-        configurarApi();
-        Call<Usuari> call = getApiService().login(user);
-        call.enqueue(new Callback<Usuari>() {
-            @Override
-            public void onResponse(Call<Usuari> call, Response<Usuari> response) {
-                handleApiResponse(response.body(), false);
-            }
-            @Override
-            public void onFailure(Call<Usuari> call, Throwable t) {
-                handleApiFailure();
-            }
-        });
+        if(emailText.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Omple el camp email", Toast.LENGTH_SHORT).show();
+        } else if (passwordText.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Omple el camp contrasenya", Toast.LENGTH_SHORT).show();
+        }else {
+            user.setEmail(emailText.getText().toString());
+            user.setPasswordCypher(passwordText.getText().toString());
+            Log.d("user", user.getPassword());
+            configurarApi();
+            Call<Usuari> call = getApiService().login(user);
+            call.enqueue(new Callback<Usuari>() {
+                @Override
+                public void onResponse(Call<Usuari> call, Response<Usuari> response) {
+                    handleApiResponse(response.body(), false);
+                }
+
+                @Override
+                public void onFailure(Call<Usuari> call, Throwable t) {
+                    handleApiFailure();
+                }
+            });
+        }
     }
 
     private void handleApiFailure() {
@@ -107,10 +109,11 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences settings = getSharedPreferences("UserInfo", 0);
             Log.d("email",settings.getString("Email",""));
             SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("userId", responseUser.getUserId());
             editor.putString("id",responseUser.getId());
             editor.putString("Email",responseUser.getEmail());
             editor.putString("Nom",responseUser.getNom());
-            editor.putString("Cognom",responseUser.getCognom());
+            editor.putString("Cognoms",responseUser.getCognoms());
             editor.commit();
             Intent intent = new Intent(getApplication(), BasicActivity.class);
             startActivity(intent);
