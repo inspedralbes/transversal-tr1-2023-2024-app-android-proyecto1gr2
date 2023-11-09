@@ -3,6 +3,7 @@ package com.example.projectesupermercat;
 import java.util.List;
 
 public class Comanda {
+    private int id;
     private List<JsonProducte> lista_productos;
     private String email;
     private int estado;
@@ -15,6 +16,23 @@ public class Comanda {
         this.estat = estat;
         this.estado = estat.getEstat_actual();
         this.preuTotal = preuTotal;
+    }
+
+    public Comanda(int id, List<JsonProducte> productes, String email, Estat estat, float preuTotal) {
+        this.id = id;
+        this.lista_productos = productes;
+        this.email = email;
+        this.estat = estat;
+        this.estado = estat.getEstat_actual();
+        this.preuTotal = preuTotal;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getEstado() {
