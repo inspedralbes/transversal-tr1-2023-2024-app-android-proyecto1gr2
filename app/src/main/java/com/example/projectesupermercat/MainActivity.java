@@ -42,6 +42,18 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
         setupListeners();
         configurarApi();
+        Call<Usuari> call = getApiService().getLogin();
+        call.enqueue(new Callback<Usuari>() {
+            @Override
+            public void onResponse(Call<Usuari> call, Response<Usuari> response) {
+                handleApiResponse(response.body(), true);
+            }
+
+            @Override
+            public void onFailure(Call<Usuari> call, Throwable t) {
+
+            }
+        });
     }
 
     private void setupListeners() {
@@ -74,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Usuari>() {
             @Override
             public void onResponse(Call<Usuari> call, Response<Usuari> response) {
-                handleApiResponse(response.body());
+                handleApiResponse(response.body(), false);
             }
             @Override
             public void onFailure(Call<Usuari> call, Throwable t) {
@@ -88,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Server error", Toast.LENGTH_SHORT).show();
     }
 
-    private void handleApiResponse(Usuari responseUser) {
+    private void handleApiResponse(Usuari responseUser, boolean autologin) {
         if (!(responseUser.getEmail().equals(""))) {
             Log.d("Response", "Success");
             Toast.makeText(getApplicationContext(), "Hola, " + responseUser.getNom(), Toast.LENGTH_SHORT).show();
@@ -104,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Log.d("Response", "Success");
-            Toast.makeText(getApplicationContext(), "Incorrect user or pass", Toast.LENGTH_SHORT).show();
+            if(!autologin) {
+                Toast.makeText(getApplicationContext(), "Incorrect user or pass", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
