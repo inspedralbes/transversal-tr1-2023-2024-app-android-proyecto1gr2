@@ -56,7 +56,6 @@ public class EditActivity extends AppCompatActivity {
 
     }
     public void onSavePressed() {
-        editedUsuari.setId(id);
         editedUsuari.setNom(nom.getText().toString());
         editedUsuari.setCognom(cognoms.getText().toString());
         editedUsuari.setEmail(email.getText().toString());
